@@ -1,4 +1,4 @@
-package org.oauth.example.gui;
+package org.ubuntuone.music.organizer.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,15 +14,15 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.asmatron.messengine.action.ResponseCallback;
 import org.asmatron.messengine.engines.support.ViewEngineConfigurator;
-import org.oauth.example.action.ActionResult;
-import org.oauth.example.action.Actions;
-import org.oauth.example.state.ApplicationState;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.ubuntuone.music.organizer.action.ActionResult;
+import org.ubuntuone.music.organizer.action.Actions;
+import org.ubuntuone.music.organizer.state.ApplicationState;
 
 
 public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 7053782125260126509L;
-	private static final String JMENU_ITEM_LABEL = "Sign in Last.fm";
+	private static final String JMENU_ITEM_LABEL = "Show playlist";
 	private static final String JMENU_EXIT_LABEL = "Exit";
 	private static final String JMENU_LABEL = "File";
 	
@@ -46,7 +46,7 @@ public class MainWindow extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.setVisible(true);
-//		this.setJMenuBar(getMenubar());
+		this.setJMenuBar(getMenubar());
 	}
 	
 	private JMenuBar getMenubar() {
@@ -107,12 +107,11 @@ public class MainWindow extends JFrame {
 			SwingWorker<Boolean, Integer> swingWorker = new SwingWorker<Boolean, Integer>() {
 				
 				protected Boolean doInBackground() throws Exception {
-					System.err.println("***************" + MainWindow.this.viewEngineConfigurator.getViewEngine());
+
 					MainWindow.this.viewEngineConfigurator.getViewEngine().request(Actions.PLAYLIST, null, new ResponseCallback<ActionResult>() {
 
 						public void onResponse(ActionResult response) {
-							log.info("RESPONSE ready");
-							System.err.println("RESPONSE ....");
+							log.info("RESPONSE getPlaylist ready");
 						}
 
 					});

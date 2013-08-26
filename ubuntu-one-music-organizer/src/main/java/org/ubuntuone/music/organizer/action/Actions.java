@@ -1,4 +1,4 @@
-package org.oauth.example.action;
+package org.ubuntuone.music.organizer.action;
 
 import static org.asmatron.messengine.action.ActionId.cm;
 

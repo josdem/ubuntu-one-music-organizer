@@ -202,19 +202,25 @@
    limitations under the License.
 */
 
-package org.oauth.example.state;
+package org.ubuntuone.music.organizer.client;
 
-
-
+import org.asmatron.messengine.engines.DefaultEngine;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.ubuntuone.music.organizer.helper.ApplicationContextSingleton;
 
 /**
  * @author josdem (joseluis.delacruz@gmail.com)
- * @understands define ALL constants on JaudioScrobbler
+ * @understands A class who knows how to launch ALL the process
  */
 
-public interface ApplicationState {
-	static final int WIDTH = 1024;
-	static final int HEIGHT = 600;
-	static final String APPLICATION_NAME = "Ubuntu One Music Organizer";
-	static final String EXPORT = "Playlist";
+public class Launcher {
+
+	public Launcher(ConfigurableApplicationContext applicationContext) {
+		DefaultEngine defaultEngine = applicationContext.getBean(DefaultEngine.class);
+		defaultEngine.start();
+	}
+	
+	public static void main(String[] args) {
+		new Launcher(ApplicationContextSingleton.getApplicationContext());
+	}
 }

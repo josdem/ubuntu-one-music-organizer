@@ -201,7 +201,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-package org.oauth.example.helper;
+package org.ubuntuone.music.organizer.helper;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

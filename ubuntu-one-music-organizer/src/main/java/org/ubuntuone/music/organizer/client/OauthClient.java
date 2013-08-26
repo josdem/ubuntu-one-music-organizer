@@ -1,4 +1,4 @@
-package org.oauth.example.client;
+package org.ubuntuone.music.organizer.client;
 
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.UbuntuOneApi;
