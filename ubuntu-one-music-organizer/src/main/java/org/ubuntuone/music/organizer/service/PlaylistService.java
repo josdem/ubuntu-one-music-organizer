@@ -8,15 +8,16 @@ import org.springframework.web.client.RestTemplate;
 import org.ubuntuone.music.organizer.model.Playlist;
 import org.ubuntuone.music.organizer.model.PlaylistResponse;
 
+import com.google.gson.Gson;
+
 @Service
 public class PlaylistService {
 
 	@Autowired
 	private RestTemplate restTemplate;
 	
-	public List<Playlist> getPlaylists(){
-		String url = "https://one.ubuntu.com/api/music/v2/playlists/";
-	    PlaylistResponse response = (PlaylistResponse) restTemplate.getForObject(url, PlaylistResponse.class);
+	public List<Playlist> getPlaylists(String json){
+		PlaylistResponse response = new Gson().fromJson(json, PlaylistResponse.class);
 	    return response.getResponse().getPlaylists();
 	}
 	

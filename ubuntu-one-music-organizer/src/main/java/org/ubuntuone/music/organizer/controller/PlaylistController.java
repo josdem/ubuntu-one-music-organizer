@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.ubuntuone.music.organizer.action.ActionResult;
 import org.ubuntuone.music.organizer.action.Actions;
 import org.ubuntuone.music.organizer.model.Playlist;
+import org.ubuntuone.music.organizer.service.OauthService;
 import org.ubuntuone.music.organizer.service.PlaylistService;
 
 @Controller
@@ -18,13 +19,16 @@ public class PlaylistController {
 	
 	@Autowired
 	private PlaylistService playlistService;
+	@Autowired
+	private OauthService oauthClient;
 	
 	private Log log = LogFactory.getLog(getClass());
 
 	@RequestMethod(Actions.GET_PLAYLIST)
 	public ActionResult getPlaylist() {
 		log.info("GETTING playlist");
-		List<Playlist> playlists = playlistService.getPlaylists();
+		String json = oauthClient.getUbuntuOnePlaylist();
+		List<Playlist> playlists = playlistService.getPlaylists(json);
 		for (Playlist playlist : playlists) {
 			log.info("playlist: " + ToStringBuilder.reflectionToString(playlist));
 		}
