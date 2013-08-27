@@ -31,15 +31,18 @@ public class OauthService {
 		.callback("http://127.0.0.1:8081")
 		.build();
 
-		Token requestToken = service.getRequestToken();
-		String authUrl = service.getAuthorizationUrl(requestToken);
-		System.out.println(authUrl);
-		
-		Scanner in = new Scanner(System.in);
-		Verifier verifier = new Verifier(in.nextLine());
-		in.close();
-		Token accessToken = service.getAccessToken(requestToken, verifier);
-		
+//		Token requestToken = service.getRequestToken();
+//		String authUrl = service.getAuthorizationUrl(requestToken);
+//		System.out.println(authUrl);
+//		
+//		Scanner in = new Scanner(System.in);
+//		Verifier verifier = new Verifier(in.nextLine());
+//		in.close();
+//		
+		//Token accessToken = service.getAccessToken(requestToken, verifier);
+//		System.out.println("token:" + accessToken.getToken());
+//		System.out.println("secret:" + accessToken.getSecret());
+		Token accessToken = new Token("mk2ZmG1llq8tS5D6Jk1M", "1PtZgnl2FtvP0rm8fSlGDMpMhrn4jjsxWBMVVlcwsJChkpKbp8GW5q1gBvbTQwRBBdtb5B7kx6K2HvKz");
 		OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
 		service.signRequest(accessToken, request); // the access token from step 4
 		Response response = request.send();
