@@ -20,6 +20,7 @@
 		<constructor-arg ref="applicationEngine" />
 	</bean>
 	
-	<bean id="mainWindow" class="org.oauth.example.gui.MainWindow" />
+	<bean class="org.springframework.web.client.RestTemplate" />
+	<bean id="mainWindow" class="org.ubuntuone.music.organizer.gui.MainWindow" />
 	
 </beans>
