@@ -218,4 +218,5 @@ public interface ApplicationState {
 	static final String APPLICATION_NAME = "Ubuntu One Music Organizer";
 	static final String EXPORT = "Playlist";
 	static final String ACCESS_TOKEN_FILE_NAME = "accessTokenFile.token";
+	static final String CALLBACK_URL = "http://162.209.56.86:5080/ubuntu-one-music-authorizer/rest/query/auth";
 }

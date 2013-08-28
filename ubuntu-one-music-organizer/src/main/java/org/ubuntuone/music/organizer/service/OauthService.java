@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.ubuntuone.music.organizer.collaborator.BrowserOpener;
 import org.ubuntuone.music.organizer.collaborator.TokenStorer;
+import org.ubuntuone.music.organizer.state.ApplicationState;
 
 @Service
 public class OauthService {
@@ -38,7 +39,7 @@ public class OauthService {
 		.provider(UbuntuOneApi.class)
 		.apiKey(YOUR_API_KEY)
 		.apiSecret(YOUR_API_SECRET)
-		.callback("http://127.0.0.1:8081")
+		.callback(ApplicationState.CALLBACK_URL)
 		.build();
 		
 		if (tokenStorer.isAccessTokenStored()){
