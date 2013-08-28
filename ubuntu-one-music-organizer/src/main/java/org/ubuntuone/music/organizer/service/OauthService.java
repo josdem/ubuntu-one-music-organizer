@@ -23,7 +23,7 @@ public class OauthService {
 	
 	private static final String YOUR_API_KEY = "ubuntuone";
 	private static final String YOUR_API_SECRET = "hammertime";
-	private static final String PROTECTED_RESOURCE_URL = "https://one.ubuntu.com/api/music/v2/playlists/";
+	private static final String PROTECTED_RESOURCE_URL = "https://one.ubuntu.com/api/music/v2/songs/";
 	
 	@Autowired
 	private TokenStorer tokenStorer;
@@ -34,7 +34,7 @@ public class OauthService {
 	
 	private Log log = LogFactory.getLog(getClass());
 
-	public String getUbuntuOnePlaylist() {
+	public String getUbuntuOneSongs() {
 		OAuthService service = new ServiceBuilder()
 		.provider(UbuntuOneApi.class)
 		.apiKey(YOUR_API_KEY)

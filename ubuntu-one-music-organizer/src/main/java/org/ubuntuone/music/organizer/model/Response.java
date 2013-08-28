@@ -3,14 +3,14 @@ package org.ubuntuone.music.organizer.model;
 import java.util.List;
 
 public class Response {
-	private List<Playlist> playlists;
+	private List<Song> songs;
 	
-	public List<Playlist> getPlaylists() {
-		return playlists;
+	public List<Song> getSongs() {
+		return songs;
 	}
 	
-	public void setPlaylists(List<Playlist> playlists) {
-		this.playlists = playlists;
+	public void setSongs(List<Song> songs) {
+		this.songs = songs;
 	}
 	
 }

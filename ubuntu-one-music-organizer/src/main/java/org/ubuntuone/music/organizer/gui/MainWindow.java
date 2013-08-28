@@ -3,6 +3,8 @@ package org.ubuntuone.music.organizer.gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -17,12 +19,13 @@ import org.asmatron.messengine.engines.support.ViewEngineConfigurator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.ubuntuone.music.organizer.action.ActionResult;
 import org.ubuntuone.music.organizer.action.Actions;
+import org.ubuntuone.music.organizer.model.Song;
 import org.ubuntuone.music.organizer.state.ApplicationState;
 
 
 public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 7053782125260126509L;
-	private static final String JMENU_ITEM_LABEL = "Show playlist";
+	private static final String JMENU_ITEM_LABEL = "Show songs";
 	private static final String JMENU_EXIT_LABEL = "Exit";
 	private static final String JMENU_LABEL = "File";
 	
@@ -99,6 +102,8 @@ public class MainWindow extends JFrame {
 	
 	private class PlaylistWork {
 		
+		private List<Song> songs = new ArrayList<Song>();
+		
 		public PlaylistWork() {
 			work();
 		}
@@ -108,7 +113,7 @@ public class MainWindow extends JFrame {
 				
 				protected Boolean doInBackground() throws Exception {
 
-					MainWindow.this.viewEngineConfigurator.getViewEngine().request(Actions.PLAYLIST, null, new ResponseCallback<ActionResult>() {
+					MainWindow.this.viewEngineConfigurator.getViewEngine().request(Actions.SONGS, songs, new ResponseCallback<ActionResult>() {
 
 						public void onResponse(ActionResult response) {
 							log.info("RESPONSE getPlaylist ready");
