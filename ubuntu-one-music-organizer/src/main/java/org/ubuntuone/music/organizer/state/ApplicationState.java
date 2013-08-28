@@ -218,6 +218,4 @@ public interface ApplicationState {
 	static final String APPLICATION_NAME = "Ubuntu One Music Organizer";
 	static final String EXPORT = "Playlist";
 	static final String ACCESS_TOKEN_FILE_NAME = "accessTokenFile.token";
-	static final String TOKEN = "token=";
-	static final String SECRET = "secret=";
 }

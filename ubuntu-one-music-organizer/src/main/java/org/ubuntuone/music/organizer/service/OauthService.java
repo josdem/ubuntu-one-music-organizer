@@ -39,7 +39,7 @@ public class OauthService {
 		.build();
 		
 		if (tokenStorer.isAccessTokenStored()){
-			accessToken = new Token("mk2ZmG1llq8tS5D6Jk1M", "1PtZgnl2FtvP0rm8fSlGDMpMhrn4jjsxWBMVVlcwsJChkpKbp8GW5q1gBvbTQwRBBdtb5B7kx6K2HvKz");
+			accessToken = tokenStorer.getToken();
 		} else {
 			Token requestToken = service.getRequestToken();
 			String authUrl = service.getAuthorizationUrl(requestToken);

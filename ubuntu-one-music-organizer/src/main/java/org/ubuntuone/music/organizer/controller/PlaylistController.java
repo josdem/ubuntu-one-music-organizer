@@ -20,14 +20,14 @@ public class PlaylistController {
 	@Autowired
 	private PlaylistService playlistService;
 	@Autowired
-	private OauthService oauthClient;
+	private OauthService oauthService;
 	
 	private Log log = LogFactory.getLog(getClass());
 
 	@RequestMethod(Actions.GET_PLAYLIST)
 	public ActionResult getPlaylist() {
 		log.info("GETTING playlist");
-		String json = oauthClient.getUbuntuOnePlaylist();
+		String json = oauthService.getUbuntuOnePlaylist();
 		List<Playlist> playlists = playlistService.getPlaylists(json);
 		for (Playlist playlist : playlists) {
 			log.info("playlist: " + ToStringBuilder.reflectionToString(playlist));
