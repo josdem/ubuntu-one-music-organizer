@@ -14,6 +14,7 @@ import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.ubuntuone.music.organizer.collaborator.BrowserOpener;
 import org.ubuntuone.music.organizer.collaborator.TokenStorer;
 
 @Service
@@ -25,6 +26,8 @@ public class OauthService {
 	
 	@Autowired
 	private TokenStorer tokenStorer;
+	@Autowired
+	private BrowserOpener browserOpener;
 	
 	private Token accessToken = null;
 	
@@ -42,8 +45,8 @@ public class OauthService {
 			accessToken = tokenStorer.getToken();
 		} else {
 			Token requestToken = service.getRequestToken();
-			String authUrl = service.getAuthorizationUrl(requestToken);
-			System.out.println(authUrl);
+			String authorizationUrl = service.getAuthorizationUrl(requestToken);
+			browserOpener.openUrl(authorizationUrl);
 			
 			Scanner in = new Scanner(System.in);
 			Verifier verifier = new Verifier(in.nextLine());
