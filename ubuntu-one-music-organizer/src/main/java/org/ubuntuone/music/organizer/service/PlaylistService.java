@@ -1,5 +1,6 @@
 package org.ubuntuone.music.organizer.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class PlaylistService {
 	
 	public List<Playlist> getPlaylists(String json){
 		PlaylistResponse response = new Gson().fromJson(json, PlaylistResponse.class);
-	    return response.getResponse().getPlaylists();
+	    return response == null ? new ArrayList<Playlist>() : response.getResponse().getPlaylists();
 	}
 	
 }

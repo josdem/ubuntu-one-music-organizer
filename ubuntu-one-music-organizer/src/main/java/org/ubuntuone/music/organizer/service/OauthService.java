@@ -1,7 +1,6 @@
 package org.ubuntuone.music.organizer.service;
 
-import java.util.Scanner;
-
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.scribe.builder.ServiceBuilder;
@@ -16,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.ubuntuone.music.organizer.collaborator.BrowserOpener;
 import org.ubuntuone.music.organizer.collaborator.TokenStorer;
+import org.ubuntuone.music.organizer.gui.OauthDialog;
 import org.ubuntuone.music.organizer.state.ApplicationState;
 
 @Service
@@ -49,9 +49,10 @@ public class OauthService {
 			String authorizationUrl = service.getAuthorizationUrl(requestToken);
 			browserOpener.openUrl(authorizationUrl);
 			
-			Scanner in = new Scanner(System.in);
-			Verifier verifier = new Verifier(in.nextLine());
-			in.close();
+			String oauthVerifierCode = OauthDialog.getOauthVerifierCode();
+			if(oauthVerifierCode == null) 
+				return StringUtils.EMPTY;
+			Verifier verifier = new Verifier(oauthVerifierCode);
 			
 			accessToken = service.getAccessToken(requestToken, verifier);
 			tokenStorer.saveAccessToken(accessToken.getToken(), accessToken.getSecret());
