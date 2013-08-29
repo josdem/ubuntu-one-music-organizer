@@ -204,10 +204,7 @@
 package org.ubuntuone.music.organizer.gui.table;
 
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
 
 /**
@@ -233,19 +230,6 @@ public class DescriptionTable extends JTable {
 		DefaultTableModel model = new DefaultTableModel(data,columnNames);
 		this.setModel(model);
 		this.setName("descriptionTable");
-		TableColumnModel tableColumnModel = new DefaultTableColumnModel();
-		
-		for (DescriptionTableColumns col : DescriptionTableColumns.values()) {
-			tableColumnModel.addColumn(setupColumn(col));
-		}
-		
-		this.setTableHeader(new DescriptionTableHeader(tableColumnModel));
 	}
 	
-	private TableColumn setupColumn(DescriptionTableColumns descriptionTableColumn) {
-		TableColumn column = new TableColumn();
-		column.setHeaderValue(descriptionTableColumn.label());
-		return column;
-	}
-
 }
