@@ -163,7 +163,6 @@ public class MainWindow extends JFrame {
 			SwingWorker<Boolean, Integer> swingWorker = new SwingWorker<Boolean, Integer>() {
 				
 				protected Boolean doInBackground() throws Exception {
-
 					MainWindow.this.viewEngineConfigurator.getViewEngine().request(Actions.SONGS, songs, new ResponseCallback<ActionResult>() {
 
 						public void onResponse(ActionResult response) {
@@ -207,11 +206,27 @@ public class MainWindow extends JFrame {
 			SwingWorker<Boolean, Integer> swingWorker = new SwingWorker<Boolean, Integer>() {
 				
 				protected Boolean doInBackground() throws Exception {
-
 					MainWindow.this.viewEngineConfigurator.getViewEngine().request(Actions.GENRES, songs, new ResponseCallback<Set<String>>() {
 
 						public void onResponse(Set<String> response) {
 							log.info("RESPONSE getGenres ready");
+							String genre = OauthDialog.getGenreSelection(response.toArray());
+							log.info("Genre selected: " + genre);
+							JTable descriptionTable = getDescriptionTable();
+							DefaultTableModel model = (DefaultTableModel) descriptionTable.getModel();
+							model.getDataVector().removeAllElements();
+							for (SongBean songBean : songs) {
+								if (songBean.getGenre().equals(genre)){
+									int row = descriptionTable.getRowCount();
+									model.addRow(new Object[] { "", "", "", "", "", "", "", "" });
+									descriptionTable.setValueAt(songBean.getArtist(), row, ApplicationState.ARTIST_COLUMN);
+									descriptionTable.setValueAt(songBean.getTitle(), row, ApplicationState.TITLE_COLUMN);
+									descriptionTable.setValueAt(songBean.getAlbum(), row, ApplicationState.ALBUM_COLUMN);
+									descriptionTable.setValueAt(songBean.getGenre(), row, ApplicationState.GENRE_COLUMN);
+									descriptionTable.setValueAt(songBean.getYear(), row, ApplicationState.YEAR_COLUMN);
+									descriptionTable.setValueAt(songBean.getTrack(), row, ApplicationState.TRACK_NUMBER_COLUMN);
+								}
+							}
 						}
 
 					});

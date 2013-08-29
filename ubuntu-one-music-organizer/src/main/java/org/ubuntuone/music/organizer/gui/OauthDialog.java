@@ -8,15 +8,28 @@ import org.apache.commons.lang3.StringUtils;
 public class OauthDialog {
 	
 	public static String getOauthVerifierCode(){
+		
 		return (String)JOptionPane.showInputDialog(
-                new JFrame(),
-                "We opened an authorizaton request in your web browser.\n" + 
-                "Please provide the Oauth Verfier code:\n",
-                "Authorization is required",
-                JOptionPane.PLAIN_MESSAGE,
-                null,
-                null,
-                StringUtils.EMPTY);
+            new JFrame(),
+            "We opened an authorizaton request in your web browser.\n" + 
+            "Please provide the Oauth Verfier code:\n",
+            "Authorization is required",
+            JOptionPane.PLAIN_MESSAGE,
+            null,
+            null,
+            StringUtils.EMPTY);
+	}
+	
+	public static String getGenreSelection(Object[] posibilities){
+		
+		return (String)JOptionPane.showInputDialog(
+            new JFrame(),
+            "Please, select a genre.\n",
+            "Genre selection",
+            JOptionPane.PLAIN_MESSAGE,
+            null,
+            posibilities,
+            StringUtils.EMPTY);
 	}
 
 }
