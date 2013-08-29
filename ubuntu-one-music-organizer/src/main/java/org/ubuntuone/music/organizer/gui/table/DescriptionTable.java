@@ -226,9 +226,7 @@ public class DescriptionTable extends JTable {
             "# Trk",
             "# CD"};
 	
-	static Object[][] data = {
-		    {"", "", "", "", "", "", ""},
-		};
+	static Object[][] data = {};
 
 
 	public DescriptionTable() {
