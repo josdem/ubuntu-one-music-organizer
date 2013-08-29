@@ -37,7 +37,7 @@ public class UbuntuOneMusicController {
 		String json = oauthService.getUbuntuOneSongs();
 		List<Song> songs = playlistService.getSongs(json);
 		songAdapterService.adapt(beanSongs, songs);
-		return ActionResult.Complete;
+		return ActionResult.COMPLETE;
 	}
 	
 	@RequestMethod(Actions.GET_GENRES)
@@ -49,7 +49,7 @@ public class UbuntuOneMusicController {
 	@RequestMethod(Actions.GET_PLAYLISTS)
 	public ActionResult getPlaylists(List<SongBean> beanSongs) {
 		log.info("GETTING playlists");
-		return ActionResult.Complete;
+		return ActionResult.COMPLETE;
 	}
 
 }
