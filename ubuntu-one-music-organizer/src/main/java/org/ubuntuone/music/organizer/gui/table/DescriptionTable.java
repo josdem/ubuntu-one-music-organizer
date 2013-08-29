@@ -203,6 +203,7 @@
 */
 package org.ubuntuone.music.organizer.gui.table;
 
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -213,10 +214,11 @@ import javax.swing.table.TableColumnModel;
  * @author josdem (joseluis.delacruz@gmail.com)
  */
 
-public class DescriptionTable extends DescriptionTableStyle {
+public class DescriptionTable extends JTable {
 	private static final long serialVersionUID = 1L;
 	
-	static String[] columnNames = {"Artist",
+	static String[] columnNames = {
+			"Artist",
             "Title",
             "Album",
             "Genre",
@@ -240,38 +242,12 @@ public class DescriptionTable extends DescriptionTableStyle {
 		}
 		
 		this.setTableHeader(new DescriptionTableHeader(tableColumnModel));
-		setPreferredWidth();
 	}
 	
 	private TableColumn setupColumn(DescriptionTableColumns descriptionTableColumn) {
 		TableColumn column = new TableColumn();
 		column.setHeaderValue(descriptionTableColumn.label());
-		column.setMinWidth(descriptionTableColumn.minWidth());
-		column.setMaxWidth(descriptionTableColumn.maxWidth());
 		return column;
 	}
 
-	private void setPreferredWidth() {
-		for(int i=0; i< this.getColumnCount(); i++){
-			switch(i){
-			case 0:
-				this.getColumnModel().getColumn(i).setPreferredWidth(100);
-				break;
-			case 1:
-				this.getColumnModel().getColumn(i).setMinWidth(180);
-				this.getColumnModel().getColumn(i).setMaxWidth(Integer.MAX_VALUE);
-				break;
-			case 2:	
-			case 3:	
-				this.getColumnModel().getColumn(i).setPreferredWidth(100);
-				break;
-			case 4:
-			case 5:
-			case 6:
-				this.getColumnModel().getColumn(i).setMinWidth(50);
-				this.getColumnModel().getColumn(i).setMaxWidth(50);
-				break;
-			}
-		}
-	}
 }

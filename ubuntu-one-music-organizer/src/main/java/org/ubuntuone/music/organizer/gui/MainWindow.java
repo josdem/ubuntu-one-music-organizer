@@ -33,7 +33,7 @@ public class MainWindow extends JFrame {
 	private static final String JMENU_ITEM_LABEL = "Show songs";
 	private static final String JMENU_EXIT_LABEL = "Exit";
 	private static final String JMENU_LABEL = "File";
-	private static final Rectangle SCROLL_PANE_BOUNDS = new Rectangle(320, 10, 693, 390);
+	private static final Rectangle SCROLL_PANE_BOUNDS = new Rectangle(10, 10, 1004, 520);
 	
 	private JMenuBar menuBar;
 	private JMenu mainMenu;
