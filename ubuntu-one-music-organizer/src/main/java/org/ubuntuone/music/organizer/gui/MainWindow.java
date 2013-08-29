@@ -33,7 +33,8 @@ import org.ubuntuone.music.organizer.state.ApplicationState;
 public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 7053782125260126509L;
 	private static final String JMENU_ITEM_LABEL = "Show songs";
-	private static final String JMENU_SELECT_ITEM_LABEL = "Select Genre";
+	private static final String JMENU_SELECT_GENRE_LABEL = "Select Genre";
+	private static final String JMENU_SELECT_PLAYLIST_LABEL = "Select Playlist";
 	private static final String JMENU_EXIT_LABEL = "Exit";
 	private static final String JMENU_LABEL = "File";
 	private static final Rectangle SCROLL_PANE_BOUNDS = new Rectangle(10, 10, 1004, 520);
@@ -41,7 +42,8 @@ public class MainWindow extends JFrame {
 	private JMenuBar menuBar;
 	private JMenu mainMenu;
 	private JMenuItem showSongsMenuItem;
-	private JMenuItem selectMenuItem;
+	private JMenuItem selectGenreMenuItem;
+	private JMenuItem selectPlaylistMenuItem;
 	private JMenuItem exitMenuItem;
 	private JTable descriptionTable;
 	private JScrollPane scrollPane;
@@ -99,7 +101,8 @@ public class MainWindow extends JFrame {
 			mainMenu = new JMenu(JMENU_LABEL);
 			mainMenu.setMnemonic(KeyEvent.VK_F);
 			mainMenu.add(getSongsMenuItem());
-			mainMenu.add(getSelectMenuItem());
+			mainMenu.add(getSelectGenreMenuItem());
+			mainMenu.add(getSelectPlaylistMenuItem());
 			mainMenu.add(getExitMenuItem());
 		}
 		return mainMenu;
@@ -113,27 +116,43 @@ public class MainWindow extends JFrame {
 			showSongsMenuItem.addActionListener(new ActionListener() {
 
 				public void actionPerformed(ActionEvent e) {
-					new PlaylistWork();
+					new SongsWorker();
 				}
 			});
 		}
 		return showSongsMenuItem;
 	}
 	
-	private JMenuItem getSelectMenuItem() {
-		if (selectMenuItem == null) {
-			selectMenuItem = new JMenuItem(JMENU_SELECT_ITEM_LABEL);
-			selectMenuItem.setMnemonic(KeyEvent.VK_G);
-			selectMenuItem.setEnabled(false);
+	private JMenuItem getSelectGenreMenuItem() {
+		if (selectGenreMenuItem == null) {
+			selectGenreMenuItem = new JMenuItem(JMENU_SELECT_GENRE_LABEL);
+			selectGenreMenuItem.setMnemonic(KeyEvent.VK_G);
+			selectGenreMenuItem.setEnabled(false);
 
-			selectMenuItem.addActionListener(new ActionListener() {
+			selectGenreMenuItem.addActionListener(new ActionListener() {
 
 				public void actionPerformed(ActionEvent e) {
 					new GenreWorker();
 				}
 			});
 		}
-		return selectMenuItem;
+		return selectGenreMenuItem;
+	}
+	
+	private JMenuItem getSelectPlaylistMenuItem() {
+		if (selectPlaylistMenuItem == null) {
+			selectPlaylistMenuItem = new JMenuItem(JMENU_SELECT_PLAYLIST_LABEL);
+			selectPlaylistMenuItem.setMnemonic(KeyEvent.VK_P);
+			selectPlaylistMenuItem.setEnabled(false);
+
+			selectPlaylistMenuItem.addActionListener(new ActionListener() {
+
+				public void actionPerformed(ActionEvent e) {
+					new PlaylistWorker();
+				}
+			});
+		}
+		return selectPlaylistMenuItem;
 	}
 	
 	private JMenuItem getExitMenuItem() {
@@ -151,11 +170,11 @@ public class MainWindow extends JFrame {
 		return exitMenuItem;
 	}
 	
-	private class PlaylistWork {
+	private class SongsWorker {
 		
 		private List<SongBean> songs = new ArrayList<SongBean>();
 		
-		public PlaylistWork() {
+		public SongsWorker() {
 			work();
 		}
 
@@ -188,7 +207,7 @@ public class MainWindow extends JFrame {
 				@Override
 				protected void done() {
 					MainWindow.this.songs = songs;
-					selectMenuItem.setEnabled(true);
+					selectGenreMenuItem.setEnabled(true);
 				}
 				
 			};
@@ -227,6 +246,38 @@ public class MainWindow extends JFrame {
 									descriptionTable.setValueAt(songBean.getTrack(), row, ApplicationState.TRACK_NUMBER_COLUMN);
 								}
 							}
+						}
+
+					});
+					return true;
+				}
+				
+				@Override
+				protected void done() {
+					selectPlaylistMenuItem.setEnabled(true);
+				}
+				
+			};
+			swingWorker.execute();
+		}
+	}
+	
+	private class PlaylistWorker {
+		
+		private List<String> playlists;
+		
+		public PlaylistWorker() {
+			work();
+		}
+
+		private void work() {
+			SwingWorker<Boolean, Integer> swingWorker = new SwingWorker<Boolean, Integer>() {
+				
+				protected Boolean doInBackground() throws Exception {
+					MainWindow.this.viewEngineConfigurator.getViewEngine().request(Actions.PLAYLIST, playlists, new ResponseCallback<ActionResult>() {
+
+						public void onResponse(ActionResult response) {
+							log.info("RESPONSE getPlaylist ready");
 						}
 
 					});

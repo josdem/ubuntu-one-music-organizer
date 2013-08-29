@@ -10,10 +10,14 @@ import org.asmatron.messengine.action.RequestAction;
 import org.ubuntuone.music.organizer.bean.SongBean;
 
 public interface Actions {
+	
 	String GET_SONGS = "getSongs";
 	ActionId<RequestAction<List<SongBean>, ActionResult>> SONGS = cm(GET_SONGS);
 	
 	String GET_GENRES = "getGenres";
 	ActionId<RequestAction<List<SongBean>, Set<String>>> GENRES = cm(GET_GENRES);
+	
+	String GET_PLAYLISTS = "getPlaylists";
+	ActionId<RequestAction<List<String>, ActionResult>> PLAYLIST = cm(GET_PLAYLISTS);
 	
 }

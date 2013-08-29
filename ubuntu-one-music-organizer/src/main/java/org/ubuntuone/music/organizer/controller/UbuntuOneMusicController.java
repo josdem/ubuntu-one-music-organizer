@@ -45,5 +45,11 @@ public class UbuntuOneMusicController {
 		log.info("GETTING genres");
 		return genreService.getGenres(beanSongs);
 	}
+	
+	@RequestMethod(Actions.GET_PLAYLISTS)
+	public ActionResult getPlaylists(List<SongBean> beanSongs) {
+		log.info("GETTING playlists");
+		return ActionResult.Complete;
+	}
 
 }
