@@ -8,7 +8,6 @@ public class SongBean {
 	private String genre;
 	private String year;
 	private String track;
-	private String discNumber;
 	
 	public String getArtist() {
 		return artist;
@@ -56,14 +55,6 @@ public class SongBean {
 	
 	public void setTrack(String track) {
 		this.track = track;
-	}
-	
-	public String getDiscNumber() {
-		return discNumber;
-	}
-	
-	public void setDiscNumber(String discNumber) {
-		this.discNumber = discNumber;
 	}
 
 }

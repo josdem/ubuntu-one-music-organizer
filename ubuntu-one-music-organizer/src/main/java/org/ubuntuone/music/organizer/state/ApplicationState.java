@@ -225,5 +225,4 @@ public interface ApplicationState {
 	static final int GENRE_COLUMN = 3;
 	static final int YEAR_COLUMN = 4;
 	static final int TRACK_NUMBER_COLUMN = 5;
-	static final int CD_NUMBER_COLUMN = 6;
 }

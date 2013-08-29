@@ -220,8 +220,7 @@ public class DescriptionTable extends JTable {
             "Album",
             "Genre",
             "Year",
-            "# Trk",
-            "# CD"};
+            "# Trk"};
 	
 	static Object[][] data = {};
 

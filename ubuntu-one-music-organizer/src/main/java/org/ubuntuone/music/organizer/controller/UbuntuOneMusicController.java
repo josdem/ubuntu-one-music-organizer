@@ -16,7 +16,7 @@ import org.ubuntuone.music.organizer.service.PlaylistService;
 import org.ubuntuone.music.organizer.service.SongAdapterService;
 
 @Controller
-public class PlaylistController {
+public class UbuntuOneMusicController {
 	
 	@Autowired
 	private PlaylistService playlistService;

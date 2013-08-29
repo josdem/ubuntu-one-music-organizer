@@ -18,7 +18,6 @@ public class SongAdapterService {
 			songBean.setGenre(song.getGenre());
 			songBean.setYear(song.getYear());
 			songBean.setTrack(song.getTrack());
-			songBean.setDiscNumber(song.getDisk_number());
 			beanSongs.add(songBean);
 		}
 	}

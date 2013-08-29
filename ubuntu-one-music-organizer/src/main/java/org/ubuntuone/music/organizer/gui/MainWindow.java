@@ -154,7 +154,6 @@ public class MainWindow extends JFrame {
 								descriptionTable.setValueAt(songBean.getGenre(), row, ApplicationState.GENRE_COLUMN);
 								descriptionTable.setValueAt(songBean.getYear(), row, ApplicationState.YEAR_COLUMN);
 								descriptionTable.setValueAt(songBean.getTrack(), row, ApplicationState.TRACK_NUMBER_COLUMN);
-								descriptionTable.setValueAt(songBean.getDiscNumber(), row, ApplicationState.CD_NUMBER_COLUMN);
 							}
 						}
 
