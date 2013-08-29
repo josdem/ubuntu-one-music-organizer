@@ -217,18 +217,15 @@ public class DescriptionTable extends DescriptionTableStyle {
 	private static final long serialVersionUID = 1L;
 	
 	static String[] columnNames = {"Artist",
-            "Track",
+            "Title",
             "Album",
             "Genre",
             "Year",
             "# Trk",
-            "# Trks",
-            "# CD",
-            "# CDs",
-            "Status"};
+            "# CD"};
 	
 	static Object[][] data = {
-		    {"", "", "", "", "", "", "", "", "", ""},
+		    {"", "", "", "", "", "", ""},
 		};
 
 
@@ -271,15 +268,9 @@ public class DescriptionTable extends DescriptionTableStyle {
 			case 4:
 			case 5:
 			case 6:
-			case 7:
-			case 8:	
 				this.getColumnModel().getColumn(i).setMinWidth(50);
 				this.getColumnModel().getColumn(i).setMaxWidth(50);
 				break;
-			case 9:	
-				this.getColumnModel().getColumn(i).setMinWidth(60);
-				this.getColumnModel().getColumn(i).setMaxWidth(60);
-				break;	
 			}
 		}
 	}

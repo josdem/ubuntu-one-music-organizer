@@ -219,4 +219,11 @@ public interface ApplicationState {
 	static final String EXPORT = "Playlist";
 	static final String ACCESS_TOKEN_FILE_NAME = "accessTokenFile.token";
 	static final String CALLBACK_URL = "http://162.209.56.86:5080/ubuntu-one-music-authorizer/rest/query/auth";
+	static final int ARTIST_COLUMN = 0;
+	static final int TITLE_COLUMN = 1;
+	static final int ALBUM_COLUMN = 2;
+	static final int GENRE_COLUMN = 3;
+	static final int YEAR_COLUMN = 4;
+	static final int TRACK_NUMBER_COLUMN = 5;
+	static final int CD_NUMBER_COLUMN = 6;
 }

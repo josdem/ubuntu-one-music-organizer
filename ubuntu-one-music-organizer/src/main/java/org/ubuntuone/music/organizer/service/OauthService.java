@@ -1,8 +1,6 @@
 package org.ubuntuone.music.organizer.service;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.UbuntuOneApi;
 import org.scribe.model.OAuthRequest;
@@ -32,8 +30,6 @@ public class OauthService {
 	
 	private Token accessToken = null;
 	
-	private Log log = LogFactory.getLog(getClass());
-
 	public String getUbuntuOneSongs() {
 		OAuthService service = new ServiceBuilder()
 		.provider(UbuntuOneApi.class)
@@ -62,7 +58,6 @@ public class OauthService {
 		service.signRequest(accessToken, request); // the access token from step 4
 		Response response = request.send();
 		String responseBody = response.getBody();
-		log.info(responseBody);
 		return responseBody;
 	}
 

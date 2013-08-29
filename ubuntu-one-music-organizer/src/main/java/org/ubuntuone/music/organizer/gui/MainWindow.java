@@ -1,5 +1,6 @@
 package org.ubuntuone.music.organizer.gui;
 
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -10,7 +11,10 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.SwingWorker;
+import javax.swing.table.DefaultTableModel;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,7 +23,8 @@ import org.asmatron.messengine.engines.support.ViewEngineConfigurator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.ubuntuone.music.organizer.action.ActionResult;
 import org.ubuntuone.music.organizer.action.Actions;
-import org.ubuntuone.music.organizer.model.Song;
+import org.ubuntuone.music.organizer.bean.SongBean;
+import org.ubuntuone.music.organizer.gui.table.DescriptionTable;
 import org.ubuntuone.music.organizer.state.ApplicationState;
 
 
@@ -28,11 +33,14 @@ public class MainWindow extends JFrame {
 	private static final String JMENU_ITEM_LABEL = "Show songs";
 	private static final String JMENU_EXIT_LABEL = "Exit";
 	private static final String JMENU_LABEL = "File";
+	private static final Rectangle SCROLL_PANE_BOUNDS = new Rectangle(320, 10, 693, 390);
 	
 	private JMenuBar menuBar;
 	private JMenu mainMenu;
 	private JMenuItem lastFmMenuItem;
 	private JMenuItem exitMenuItem;
+	private JTable descriptionTable;
+	private JScrollPane scrollPane;
 	
 	@Autowired
 	private ViewEngineConfigurator viewEngineConfigurator;
@@ -42,6 +50,7 @@ public class MainWindow extends JFrame {
 	public MainWindow() {
 		super(ApplicationState.APPLICATION_NAME);
 		initialize();
+		getDescriptionTable();
 	}
 
 	private void initialize() {
@@ -50,6 +59,23 @@ public class MainWindow extends JFrame {
 		this.setResizable(false);
 		this.setVisible(true);
 		this.setJMenuBar(getMenubar());
+		this.add(getScrollPane());
+	}
+	
+	private JScrollPane getScrollPane() {
+		if (scrollPane == null) {
+			scrollPane = new JScrollPane(getDescriptionTable());
+			scrollPane.setBounds(SCROLL_PANE_BOUNDS);
+		}
+		return scrollPane;
+	}
+	
+	public JTable getDescriptionTable() {
+		if (descriptionTable == null) {
+			descriptionTable = new DescriptionTable();
+		}
+
+		return descriptionTable;
 	}
 	
 	private JMenuBar getMenubar() {
@@ -102,7 +128,7 @@ public class MainWindow extends JFrame {
 	
 	private class PlaylistWork {
 		
-		private List<Song> songs = new ArrayList<Song>();
+		private List<SongBean> songs = new ArrayList<SongBean>();
 		
 		public PlaylistWork() {
 			work();
@@ -117,6 +143,19 @@ public class MainWindow extends JFrame {
 
 						public void onResponse(ActionResult response) {
 							log.info("RESPONSE getPlaylist ready");
+							JTable descriptionTable = getDescriptionTable();
+							DefaultTableModel model = (DefaultTableModel) descriptionTable.getModel();
+							for (SongBean songBean : songs) {
+								int row = descriptionTable.getRowCount();
+								model.addRow(new Object[] { "", "", "", "", "", "", "", "" });
+								descriptionTable.setValueAt(songBean.getArtist(), row, ApplicationState.ARTIST_COLUMN);
+								descriptionTable.setValueAt(songBean.getTitle(), row, ApplicationState.TITLE_COLUMN);
+								descriptionTable.setValueAt(songBean.getAlbum(), row, ApplicationState.ALBUM_COLUMN);
+								descriptionTable.setValueAt(songBean.getGenre(), row, ApplicationState.GENRE_COLUMN);
+								descriptionTable.setValueAt(songBean.getYear(), row, ApplicationState.YEAR_COLUMN);
+								descriptionTable.setValueAt(songBean.getTrack(), row, ApplicationState.TRACK_NUMBER_COLUMN);
+								descriptionTable.setValueAt(songBean.getDiscNumber(), row, ApplicationState.CD_NUMBER_COLUMN);
+							}
 						}
 
 					});
