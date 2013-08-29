@@ -225,4 +225,6 @@ public interface ApplicationState {
 	static final int GENRE_COLUMN = 3;
 	static final int YEAR_COLUMN = 4;
 	static final int TRACK_NUMBER_COLUMN = 5;
+	static final String GET_SONGS_URL = "https://one.ubuntu.com/api/music/v2/songs/";
+	static final String GET_PLAYLISTS_URL = "https://one.ubuntu.com/api/music/v2/playlists/";
 }

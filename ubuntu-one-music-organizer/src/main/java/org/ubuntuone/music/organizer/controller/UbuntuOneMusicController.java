@@ -16,6 +16,7 @@ import org.ubuntuone.music.organizer.service.GenreService;
 import org.ubuntuone.music.organizer.service.OauthService;
 import org.ubuntuone.music.organizer.service.PlaylistService;
 import org.ubuntuone.music.organizer.service.SongAdapterService;
+import org.ubuntuone.music.organizer.state.ApplicationState;
 
 @Controller
 public class UbuntuOneMusicController {
@@ -34,7 +35,7 @@ public class UbuntuOneMusicController {
 	@RequestMethod(Actions.GET_SONGS)
 	public ActionResult getSongs(List<SongBean> beanSongs) {
 		log.info("GETTING songs");
-		String json = oauthService.getUbuntuOneSongs();
+		String json = oauthService.requestUbuntuOneMusic(ApplicationState.GET_SONGS_URL);
 		List<Song> songs = playlistService.getSongs(json);
 		songAdapterService.adapt(beanSongs, songs);
 		return ActionResult.COMPLETE;
@@ -49,6 +50,8 @@ public class UbuntuOneMusicController {
 	@RequestMethod(Actions.GET_PLAYLISTS)
 	public ActionResult getPlaylists(List<SongBean> beanSongs) {
 		log.info("GETTING playlists");
+		String json = oauthService.requestUbuntuOneMusic(ApplicationState.GET_PLAYLISTS_URL);
+		log.info("playlist response: " + json);
 		return ActionResult.COMPLETE;
 	}
 
