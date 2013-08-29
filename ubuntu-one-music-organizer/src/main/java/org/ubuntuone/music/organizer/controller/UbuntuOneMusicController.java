@@ -1,6 +1,7 @@
 package org.ubuntuone.music.organizer.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,6 +12,7 @@ import org.ubuntuone.music.organizer.action.ActionResult;
 import org.ubuntuone.music.organizer.action.Actions;
 import org.ubuntuone.music.organizer.bean.SongBean;
 import org.ubuntuone.music.organizer.model.Song;
+import org.ubuntuone.music.organizer.service.GenreService;
 import org.ubuntuone.music.organizer.service.OauthService;
 import org.ubuntuone.music.organizer.service.PlaylistService;
 import org.ubuntuone.music.organizer.service.SongAdapterService;
@@ -24,16 +26,24 @@ public class UbuntuOneMusicController {
 	private OauthService oauthService;
 	@Autowired
 	private SongAdapterService songAdapterService;
+	@Autowired
+	private GenreService genreService;
 	
 	private Log log = LogFactory.getLog(getClass());
 
 	@RequestMethod(Actions.GET_SONGS)
-	public ActionResult getPlaylist(List<SongBean> beanSongs) {
-		log.info("GETTING playlist");
+	public ActionResult getSongs(List<SongBean> beanSongs) {
+		log.info("GETTING songs");
 		String json = oauthService.getUbuntuOneSongs();
 		List<Song> songs = playlistService.getSongs(json);
 		songAdapterService.adapt(beanSongs, songs);
 		return ActionResult.Complete;
+	}
+	
+	@RequestMethod(Actions.GET_GENRES)
+	public Set<String> getGenres(List<SongBean> beanSongs) {
+		log.info("GETTING genres");
+		return genreService.getGenres(beanSongs);
 	}
 
 }
