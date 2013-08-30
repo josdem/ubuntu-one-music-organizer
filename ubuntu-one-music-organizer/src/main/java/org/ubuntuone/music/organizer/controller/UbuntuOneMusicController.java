@@ -7,6 +7,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.asmatron.messengine.annotations.RequestMethod;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.client.RestTemplate;
 import org.ubuntuone.music.organizer.action.ActionResult;
@@ -67,12 +70,17 @@ public class UbuntuOneMusicController {
 	
 	@RequestMethod(Actions.CREATE_PLAYLIST)
 	public ActionResult createPlaylist(String name) {
-		log.info("CREATING playlists");
+		log.info("CREATING playlist");
 		PlaylistBean playlistBean = new PlaylistBean();
 		playlistBean.setName(name);
 		String json = new Gson().toJson(playlistBean);
 		log.info("json:" + json);
-		String result = restTemplate.postForObject(ApplicationState.GET_PLAYLISTS_URL, json, String.class);
+		
+		HttpHeaders headers = new HttpHeaders();  
+        headers.setContentType( MediaType.APPLICATION_JSON );  
+        HttpEntity<String> request= new HttpEntity<String>( json, headers );
+        
+		String result = restTemplate.postForObject(ApplicationState.GET_PLAYLISTS_URL, request, String.class);
 		log.info("result:" + result);
 		PlaylistWrapper playlistWrapper = new Gson().fromJson(result, PlaylistWrapper.class);
 		return playlistWrapper.getMeta().getMessage().equals("Created") ? ActionResult.COMPLETE : ActionResult.FAIL;
