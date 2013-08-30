@@ -31,5 +31,17 @@ public class OauthDialog {
             posibilities,
             StringUtils.EMPTY);
 	}
+	
+	public static String getPlaylistSelection(Object[] posibilities){
+		
+		return (String)JOptionPane.showInputDialog(
+            new JFrame(),
+            "Please, select a playlist.\n",
+            "Playlist selection",
+            JOptionPane.PLAIN_MESSAGE,
+            null,
+            posibilities,
+            StringUtils.EMPTY);
+	}
 
 }

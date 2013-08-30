@@ -36,14 +36,18 @@ public class MainWindow extends JFrame {
 	private static final String JMENU_SELECT_GENRE_LABEL = "Select Genre";
 	private static final String JMENU_SELECT_PLAYLIST_LABEL = "Select Playlist";
 	private static final String JMENU_EXIT_LABEL = "Exit";
-	private static final String JMENU_LABEL = "File";
+	private static final String JMENU_FILE_LABEL = "File";
+	private static final String JMENU_CREATE_LABEL = "Create";
+	private static final String JMENU_CREATE_PLAYLIST_LABEL = "Create Playlist";
 	private static final Rectangle SCROLL_PANE_BOUNDS = new Rectangle(10, 10, 1004, 520);
 	
 	private JMenuBar menuBar;
-	private JMenu mainMenu;
+	private JMenu fileMenu;
+	private JMenu createMenu;
 	private JMenuItem showSongsMenuItem;
 	private JMenuItem selectGenreMenuItem;
 	private JMenuItem selectPlaylistMenuItem;
+	private JMenuItem createPlaylistMenuItem;
 	private JMenuItem exitMenuItem;
 	private JTable descriptionTable;
 	private JScrollPane scrollPane;
@@ -92,20 +96,44 @@ public class MainWindow extends JFrame {
 		if (menuBar == null) {
 			menuBar = new JMenuBar();
 			menuBar.add(getFileMenu());
+			menuBar.add(getCreateMenu());
 		}
 		return menuBar;
 	}
 	
 	private JMenu getFileMenu() {
-		if (mainMenu == null) {
-			mainMenu = new JMenu(JMENU_LABEL);
-			mainMenu.setMnemonic(KeyEvent.VK_F);
-			mainMenu.add(getSongsMenuItem());
-			mainMenu.add(getSelectGenreMenuItem());
-			mainMenu.add(getSelectPlaylistMenuItem());
-			mainMenu.add(getExitMenuItem());
+		if (fileMenu == null) {
+			fileMenu = new JMenu(JMENU_FILE_LABEL);
+			fileMenu.setMnemonic(KeyEvent.VK_F);
+			fileMenu.add(getSongsMenuItem());
+			fileMenu.add(getSelectGenreMenuItem());
+			fileMenu.add(getSelectPlaylistMenuItem());
+			fileMenu.add(getExitMenuItem());
 		}
-		return mainMenu;
+		return fileMenu;
+	}
+	
+	private JMenu getCreateMenu() {
+		if (createMenu == null) {
+			createMenu = new JMenu(JMENU_CREATE_LABEL);
+			createMenu.setMnemonic(KeyEvent.VK_C);
+			createMenu.add(getCreatePlaylistMenuItem());
+		}
+		return createMenu;
+	}
+	
+	private JMenuItem getCreatePlaylistMenuItem() {
+		if (createPlaylistMenuItem == null) {
+			createPlaylistMenuItem = new JMenuItem(JMENU_CREATE_PLAYLIST_LABEL);
+			createPlaylistMenuItem.setMnemonic(KeyEvent.VK_P);
+
+			createPlaylistMenuItem.addActionListener(new ActionListener() {
+
+				public void actionPerformed(ActionEvent e) {
+				}
+			});
+		}
+		return createPlaylistMenuItem;
 	}
 	
 	private JMenuItem getSongsMenuItem() {
@@ -278,9 +306,8 @@ public class MainWindow extends JFrame {
 
 						public void onResponse(ActionResult response) {
 							log.info("RESPONSE getPlaylist ready");
-							for (String playlist : playlists) {
-								log.info("playlist: " + playlist);
-							}
+							String playlist = OauthDialog.getPlaylistSelection(playlists.toArray());
+							log.info("Selected playlist: " + playlist);
 						}
 
 					});
