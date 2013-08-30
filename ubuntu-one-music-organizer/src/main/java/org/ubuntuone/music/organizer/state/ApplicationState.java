@@ -227,4 +227,7 @@ public interface ApplicationState {
 	static final int TRACK_NUMBER_COLUMN = 5;
 	static final String GET_SONGS_URL = "https://one.ubuntu.com/api/music/v2/songs/";
 	static final String GET_PLAYLISTS_URL = "https://one.ubuntu.com/api/music/v2/playlists/";
+	static final String WORKING = "Working...";
+	static final String DONE = "Done!";
+	static final String PLAYLIST_SELECTED = "Playlist selected: ";
 }

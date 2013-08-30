@@ -8,10 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingWorker;
@@ -33,13 +36,19 @@ import org.ubuntuone.music.organizer.state.ApplicationState;
 public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 7053782125260126509L;
 	private static final String JMENU_ITEM_LABEL = "Show songs";
-	private static final String JMENU_SELECT_GENRE_LABEL = "Select Genre";
-	private static final String JMENU_SELECT_PLAYLIST_LABEL = "Select Playlist";
+	private static final String JMENU_SELECT_GENRE_LABEL = "Filter by Genre";
+	private static final String JMENU_SELECT_PLAYLIST_LABEL = "Move to Playlist";
 	private static final String JMENU_EXIT_LABEL = "Exit";
 	private static final String JMENU_FILE_LABEL = "File";
 	private static final String JMENU_CREATE_LABEL = "Create";
 	private static final String JMENU_CREATE_PLAYLIST_LABEL = "Create Playlist";
-	private static final Rectangle SCROLL_PANE_BOUNDS = new Rectangle(10, 10, 1004, 520);
+	private static final String STATUS_LABEL = "Status";
+	private static final String MOVE = "Move";
+	
+	private static final Rectangle SCROLL_PANE_BOUNDS = new Rectangle(10, 10, 1004, 500);
+	private static final Rectangle BOTTOM_PANEL_BOUNDS = new Rectangle(10, 500, 1004, 20);
+	private static final Rectangle LABEL_BOUNDS = new Rectangle(10, 515, 200, 20);
+	private static final Rectangle MOVE_BUTTON_BOUNDS = new Rectangle(902, 515, 110, 28);
 	
 	private JMenuBar menuBar;
 	private JMenu fileMenu;
@@ -51,6 +60,9 @@ public class MainWindow extends JFrame {
 	private JMenuItem exitMenuItem;
 	private JTable descriptionTable;
 	private JScrollPane scrollPane;
+	private JPanel bottomPanel;
+	private JLabel statusLabel;
+	private JButton moveButton;
 	
 	private List<SongBean> songs;
 	
@@ -72,8 +84,44 @@ public class MainWindow extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.setJMenuBar(getMenubar());
-		this.setVisible(true);
 		this.add(getScrollPane());
+		this.add(getBottomPanel());
+		this.setVisible(true);
+	}
+	
+	private JPanel getBottomPanel() {
+		if (bottomPanel == null) {
+			bottomPanel = new JPanel();
+			bottomPanel.setLayout(null);
+			bottomPanel.setBounds(BOTTOM_PANEL_BOUNDS);
+			bottomPanel.add(getStatusLabel());
+			bottomPanel.add(getMoveButton());
+		}
+		return bottomPanel;
+	}
+	
+	public JButton getMoveButton() {
+		if (moveButton == null) {
+			moveButton = new JButton(MOVE);
+			moveButton.setBounds(MOVE_BUTTON_BOUNDS);
+			moveButton.setEnabled(false);
+
+			moveButton.addActionListener(new ActionListener() {
+
+				public void actionPerformed(ActionEvent e) {
+					
+				}
+			});
+		}
+		return moveButton;
+	}
+	
+	public JLabel getStatusLabel() {
+		if (statusLabel == null) {
+			statusLabel = new JLabel(STATUS_LABEL);
+			statusLabel.setBounds(LABEL_BOUNDS);
+		}
+		return statusLabel;
 	}
 	
 	private JScrollPane getScrollPane() {
@@ -146,6 +194,7 @@ public class MainWindow extends JFrame {
 			showSongsMenuItem.addActionListener(new ActionListener() {
 
 				public void actionPerformed(ActionEvent e) {
+					getStatusLabel().setText(ApplicationState.WORKING);
 					new SongsWorker();
 				}
 			});
@@ -228,18 +277,14 @@ public class MainWindow extends JFrame {
 								descriptionTable.setValueAt(songBean.getYear(), row, ApplicationState.YEAR_COLUMN);
 								descriptionTable.setValueAt(songBean.getTrack(), row, ApplicationState.TRACK_NUMBER_COLUMN);
 							}
+							MainWindow.this.songs = songs;
+							selectGenreMenuItem.setEnabled(true);
+							getStatusLabel().setText(ApplicationState.DONE);
 						}
 
 					});
 					return true;
 				}
-				
-				@Override
-				protected void done() {
-					MainWindow.this.songs = songs;
-					selectGenreMenuItem.setEnabled(true);
-				}
-				
 			};
 			swingWorker.execute();
 		}
@@ -276,15 +321,11 @@ public class MainWindow extends JFrame {
 									descriptionTable.setValueAt(songBean.getTrack(), row, ApplicationState.TRACK_NUMBER_COLUMN);
 								}
 							}
+							selectPlaylistMenuItem.setEnabled(true);
 						}
 
 					});
 					return true;
-				}
-				
-				@Override
-				protected void done() {
-					selectPlaylistMenuItem.setEnabled(true);
 				}
 				
 			};
@@ -309,6 +350,8 @@ public class MainWindow extends JFrame {
 							log.info("RESPONSE getPlaylist ready");
 							String playlist = OauthDialog.getPlaylistSelection(playlists.toArray());
 							log.info("Selected playlist: " + playlist);
+							getStatusLabel().setText(ApplicationState.PLAYLIST_SELECTED + playlist);
+							getMoveButton().setEnabled(true);
 						}
 
 					});
