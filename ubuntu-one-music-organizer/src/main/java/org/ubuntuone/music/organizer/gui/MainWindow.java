@@ -28,8 +28,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.ubuntuone.music.organizer.action.ActionResult;
 import org.ubuntuone.music.organizer.action.Actions;
 import org.ubuntuone.music.organizer.bean.SongBean;
+import org.ubuntuone.music.organizer.collaborator.ReaderCollaborator;
 import org.ubuntuone.music.organizer.gui.table.DescriptionTable;
-import org.ubuntuone.music.organizer.service.GenreService;
+import org.ubuntuone.music.organizer.model.Playlist;
+import org.ubuntuone.music.organizer.model.PlaylistBucket;
 import org.ubuntuone.music.organizer.state.ApplicationState;
 
 
@@ -65,11 +67,13 @@ public class MainWindow extends JFrame {
 	private JButton moveButton;
 	
 	private List<SongBean> songs;
+	private Playlist playlistSelected;
+	private List<SongBean> songsFiltered = new ArrayList<SongBean>();
 	
 	@Autowired
 	private ViewEngineConfigurator viewEngineConfigurator;
 	@Autowired
-	private GenreService genreService;
+	private ReaderCollaborator readerCollaborator;
 	
 	private Log log = LogFactory.getLog(getClass());
 	
@@ -109,7 +113,7 @@ public class MainWindow extends JFrame {
 			moveButton.addActionListener(new ActionListener() {
 
 				public void actionPerformed(ActionEvent e) {
-					
+					new MoveSongsWorker();
 				}
 			});
 		}
@@ -311,6 +315,7 @@ public class MainWindow extends JFrame {
 							model.getDataVector().removeAllElements();
 							for (SongBean songBean : songs) {
 								if (songBean.getGenre().equals(genre)){
+									songsFiltered.add(songBean);
 									int row = descriptionTable.getRowCount();
 									model.addRow(new Object[] { "", "", "", "", "", "", "", "" });
 									descriptionTable.setValueAt(songBean.getArtist(), row, ApplicationState.ARTIST_COLUMN);
@@ -334,7 +339,7 @@ public class MainWindow extends JFrame {
 	}
 	
 	private class PlaylistWorker {
-		private List<String> playlists = new ArrayList<String>();
+		private List<Playlist> playlists = new ArrayList<Playlist>();
 		
 		public PlaylistWorker() {
 			work();
@@ -348,9 +353,11 @@ public class MainWindow extends JFrame {
 
 						public void onResponse(ActionResult response) {
 							log.info("RESPONSE getPlaylist ready");
-							String playlist = OauthDialog.getPlaylistSelection(playlists.toArray());
+							List<String> names = readerCollaborator.getPlaylistNames(playlists);
+							String playlist = OauthDialog.getPlaylistSelection(names.toArray());
 							log.info("Selected playlist: " + playlist);
 							getStatusLabel().setText(ApplicationState.PLAYLIST_SELECTED + playlist);
+							playlistSelected = readerCollaborator.getPlaylistSelected(playlists, playlist);
 							getMoveButton().setEnabled(true);
 						}
 
@@ -384,6 +391,35 @@ public class MainWindow extends JFrame {
 							} else {
 								OauthDialog.playlistCreationFailed();
 							}
+						}
+
+					});
+					return true;
+				}
+				
+			};
+			swingWorker.execute();
+		}
+	}
+	
+	private class MoveSongsWorker {
+		private PlaylistBucket playlistBucket = null;
+
+		public MoveSongsWorker() {
+			playlistBucket = new PlaylistBucket();
+			playlistBucket.setPlaylist_id(playlistSelected.getId());
+			playlistBucket.setSong_id_list(readerCollaborator.getSongsIds(songsFiltered));
+			work();
+		}
+
+		private void work() {
+			SwingWorker<Boolean, Integer> swingWorker = new SwingWorker<Boolean, Integer>() {
+				
+				protected Boolean doInBackground() throws Exception {
+					MainWindow.this.viewEngineConfigurator.getViewEngine().request(Actions.MOVE, playlistBucket, new ResponseCallback<ActionResult>() {
+
+						public void onResponse(ActionResult response) {
+							log.info("RESPONSE moveSongsToPlaylist ready");
 						}
 
 					});

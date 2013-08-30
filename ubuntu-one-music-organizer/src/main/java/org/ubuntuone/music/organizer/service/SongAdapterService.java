@@ -12,6 +12,7 @@ public class SongAdapterService {
 	public void adapt(List<SongBean> beanSongs, List<Song> songs) {
 		for (Song song : songs) {
 			SongBean songBean = new SongBean();
+			songBean.setId(song.getId());
 			songBean.setArtist(song.getArtist());
 			songBean.setTitle(song.getTitle());
 			songBean.setAlbum(song.getAlbum());

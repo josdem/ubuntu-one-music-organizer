@@ -2,12 +2,21 @@ package org.ubuntuone.music.organizer.bean;
 
 public class SongBean {
 	
+	private String id;
 	private String artist;
 	private String title;
 	private String album;
 	private String genre;
 	private String year;
 	private String track;
+	
+	public String getId() {
+		return id;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
+	}
 	
 	public String getArtist() {
 		return artist;
