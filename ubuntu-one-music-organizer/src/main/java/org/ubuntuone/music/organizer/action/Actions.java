@@ -20,4 +20,7 @@ public interface Actions {
 	String GET_PLAYLISTS = "getPlaylists";
 	ActionId<RequestAction<List<String>, ActionResult>> PLAYLIST = cm(GET_PLAYLISTS);
 	
+	String CREATE_PLAYLIST = "createPlaylists";
+	ActionId<RequestAction<String, ActionResult>> CREATE = cm(CREATE_PLAYLIST);
+	
 }

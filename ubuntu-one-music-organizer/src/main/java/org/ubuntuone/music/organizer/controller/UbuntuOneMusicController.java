@@ -8,15 +8,20 @@ import org.apache.commons.logging.LogFactory;
 import org.asmatron.messengine.annotations.RequestMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.client.RestTemplate;
 import org.ubuntuone.music.organizer.action.ActionResult;
 import org.ubuntuone.music.organizer.action.Actions;
+import org.ubuntuone.music.organizer.bean.PlaylistBean;
 import org.ubuntuone.music.organizer.bean.SongBean;
+import org.ubuntuone.music.organizer.model.PlaylistWrapper;
 import org.ubuntuone.music.organizer.model.Song;
 import org.ubuntuone.music.organizer.service.GenreService;
 import org.ubuntuone.music.organizer.service.OauthService;
 import org.ubuntuone.music.organizer.service.ReaderService;
 import org.ubuntuone.music.organizer.service.SongAdapterService;
 import org.ubuntuone.music.organizer.state.ApplicationState;
+
+import com.google.gson.Gson;
 
 @Controller
 public class UbuntuOneMusicController {
@@ -29,6 +34,9 @@ public class UbuntuOneMusicController {
 	private SongAdapterService songAdapterService;
 	@Autowired
 	private GenreService genreService;
+	
+	@Autowired
+	private RestTemplate restTemplate;
 	
 	private Log log = LogFactory.getLog(getClass());
 
@@ -55,6 +63,19 @@ public class UbuntuOneMusicController {
 			playlists.add(name);
 		}
 		return ActionResult.COMPLETE;
+	}
+	
+	@RequestMethod(Actions.CREATE_PLAYLIST)
+	public ActionResult createPlaylist(String name) {
+		log.info("CREATING playlists");
+		PlaylistBean playlistBean = new PlaylistBean();
+		playlistBean.setName(name);
+		String json = new Gson().toJson(playlistBean);
+		log.info("json:" + json);
+		String result = restTemplate.postForObject(ApplicationState.GET_PLAYLISTS_URL, json, String.class);
+		log.info("result:" + result);
+		PlaylistWrapper playlistWrapper = new Gson().fromJson(result, PlaylistWrapper.class);
+		return playlistWrapper.getMeta().getMessage().equals("Created") ? ActionResult.COMPLETE : ActionResult.FAIL;
 	}
 
 }

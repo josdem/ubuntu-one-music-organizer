@@ -44,4 +44,23 @@ public class OauthDialog {
             StringUtils.EMPTY);
 	}
 
+	public static String getCreatePlaylistDialog() {
+		return (String)JOptionPane.showInputDialog(
+	            new JFrame(),
+	            "Provide a new playlist name\n", 
+	            "New Playlist",
+	            JOptionPane.PLAIN_MESSAGE,
+	            null,
+	            null,
+	            StringUtils.EMPTY);
+	}
+
+	public static void playlistCreated() {
+		JOptionPane.showMessageDialog(new JFrame(), "Playlist created successfully");
+	}
+
+	public static void playlistCreationFailed() {
+		JOptionPane.showMessageDialog(new JFrame(), "Playlist creation failed");
+	}
+
 }

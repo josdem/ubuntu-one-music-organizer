@@ -130,6 +130,8 @@ public class MainWindow extends JFrame {
 			createPlaylistMenuItem.addActionListener(new ActionListener() {
 
 				public void actionPerformed(ActionEvent e) {
+					String playlist = OauthDialog.getCreatePlaylistDialog();
+					new CreatePlaylistWorker(playlist);
 				}
 			});
 		}
@@ -291,7 +293,6 @@ public class MainWindow extends JFrame {
 	}
 	
 	private class PlaylistWorker {
-		
 		private List<String> playlists = new ArrayList<String>();
 		
 		public PlaylistWorker() {
@@ -308,6 +309,38 @@ public class MainWindow extends JFrame {
 							log.info("RESPONSE getPlaylist ready");
 							String playlist = OauthDialog.getPlaylistSelection(playlists.toArray());
 							log.info("Selected playlist: " + playlist);
+						}
+
+					});
+					return true;
+				}
+				
+			};
+			swingWorker.execute();
+		}
+	}
+	
+	private class CreatePlaylistWorker {
+		private String playlist;
+
+		public CreatePlaylistWorker(String playlist) {
+			this.playlist = playlist;
+			work();
+		}
+
+		private void work() {
+			SwingWorker<Boolean, Integer> swingWorker = new SwingWorker<Boolean, Integer>() {
+				
+				protected Boolean doInBackground() throws Exception {
+					MainWindow.this.viewEngineConfigurator.getViewEngine().request(Actions.CREATE, playlist, new ResponseCallback<ActionResult>() {
+
+						public void onResponse(ActionResult response) {
+							log.info("RESPONSE createPlaylist ready");
+							if (response != null && response.equals(ActionResult.COMPLETE)){
+								OauthDialog.playlistCreated();
+							} else {
+								OauthDialog.playlistCreationFailed();
+							}
 						}
 
 					});
