@@ -1,21 +1,16 @@
 package org.ubuntuone.music.organizer.model;
 
+import java.util.List;
+
 public class SongResponse {
+	private List<Song> songs;
 	
-	private Meta meta;
-	private Response response;
+	public List<Song> getSongs() {
+		return songs;
+	}
 	
-	public Meta getMeta() {
-		return meta;
-	}
-	public void setMeta(Meta meta) {
-		this.meta = meta;
-	}
-	public Response getResponse() {
-		return response;
-	}
-	public void setResponse(Response response) {
-		this.response = response;
+	public void setSongs(List<Song> songs) {
+		this.songs = songs;
 	}
 	
 }

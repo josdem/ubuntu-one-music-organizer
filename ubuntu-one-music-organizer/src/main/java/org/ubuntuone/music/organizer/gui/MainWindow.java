@@ -264,7 +264,7 @@ public class MainWindow extends JFrame {
 	
 	private class PlaylistWorker {
 		
-		private List<String> playlists;
+		private List<String> playlists = new ArrayList<String>();
 		
 		public PlaylistWorker() {
 			work();
@@ -278,6 +278,9 @@ public class MainWindow extends JFrame {
 
 						public void onResponse(ActionResult response) {
 							log.info("RESPONSE getPlaylist ready");
+							for (String playlist : playlists) {
+								log.info("playlist: " + playlist);
+							}
 						}
 
 					});

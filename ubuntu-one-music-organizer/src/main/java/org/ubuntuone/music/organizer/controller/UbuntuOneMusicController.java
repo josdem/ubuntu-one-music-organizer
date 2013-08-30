@@ -14,7 +14,7 @@ import org.ubuntuone.music.organizer.bean.SongBean;
 import org.ubuntuone.music.organizer.model.Song;
 import org.ubuntuone.music.organizer.service.GenreService;
 import org.ubuntuone.music.organizer.service.OauthService;
-import org.ubuntuone.music.organizer.service.PlaylistService;
+import org.ubuntuone.music.organizer.service.ReaderService;
 import org.ubuntuone.music.organizer.service.SongAdapterService;
 import org.ubuntuone.music.organizer.state.ApplicationState;
 
@@ -22,7 +22,7 @@ import org.ubuntuone.music.organizer.state.ApplicationState;
 public class UbuntuOneMusicController {
 	
 	@Autowired
-	private PlaylistService playlistService;
+	private ReaderService playlistService;
 	@Autowired
 	private OauthService oauthService;
 	@Autowired
@@ -48,10 +48,12 @@ public class UbuntuOneMusicController {
 	}
 	
 	@RequestMethod(Actions.GET_PLAYLISTS)
-	public ActionResult getPlaylists(List<SongBean> beanSongs) {
+	public ActionResult getPlaylists(List<String> playlists) {
 		log.info("GETTING playlists");
 		String json = oauthService.requestUbuntuOneMusic(ApplicationState.GET_PLAYLISTS_URL);
-		log.info("playlist response: " + json);
+		for (String name : playlistService.getPlaylists(json)) {
+			playlists.add(name);
+		}
 		return ActionResult.COMPLETE;
 	}
 
