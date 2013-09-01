@@ -17,8 +17,10 @@ import org.ubuntuone.music.organizer.action.Actions;
 import org.ubuntuone.music.organizer.bean.PlaylistBean;
 import org.ubuntuone.music.organizer.bean.SongBean;
 import org.ubuntuone.music.organizer.model.Playlist;
+import org.ubuntuone.music.organizer.model.PlaylistBucket;
 import org.ubuntuone.music.organizer.model.PlaylistWrapper;
 import org.ubuntuone.music.organizer.model.Song;
+import org.ubuntuone.music.organizer.model.SongList;
 import org.ubuntuone.music.organizer.service.GenreService;
 import org.ubuntuone.music.organizer.service.OauthService;
 import org.ubuntuone.music.organizer.service.ReaderService;
@@ -85,6 +87,24 @@ public class UbuntuOneMusicController {
 		log.info("result:" + result);
 		PlaylistWrapper playlistWrapper = new Gson().fromJson(result, PlaylistWrapper.class);
 		return playlistWrapper.getMeta().getMessage().equals("Created") ? ActionResult.COMPLETE : ActionResult.FAIL;
+	}
+	
+	@RequestMethod(Actions.MOVE_SONGS_TO_PLAYLIST)
+	public ActionResult moveSongsToPlaylist(PlaylistBucket playlistBucket) {
+		log.info("MOVING songs to the playlists");
+		SongList songList = new SongList();
+		for (String string : playlistBucket.getSong_id_list()) {
+			songList.getSong_id_list().add(string);
+		}
+		String json = new Gson().toJson(songList);
+		log.info("json:" + json);
+		
+		HttpHeaders headers = new HttpHeaders();  
+        headers.setContentType( MediaType.APPLICATION_JSON );  
+        HttpEntity<String> request= new HttpEntity<String>( json , headers );
+        
+		restTemplate.put(ApplicationState.GET_PLAYLISTS_URL + playlistBucket.getPlaylist_id(), request);
+		return ActionResult.COMPLETE;
 	}
 
 }
