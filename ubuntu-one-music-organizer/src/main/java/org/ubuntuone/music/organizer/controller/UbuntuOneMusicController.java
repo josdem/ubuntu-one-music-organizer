@@ -16,6 +16,7 @@ import org.ubuntuone.music.organizer.action.ActionResult;
 import org.ubuntuone.music.organizer.action.Actions;
 import org.ubuntuone.music.organizer.bean.PlaylistBean;
 import org.ubuntuone.music.organizer.bean.SongBean;
+import org.ubuntuone.music.organizer.collaborator.ReaderCollaborator;
 import org.ubuntuone.music.organizer.model.Playlist;
 import org.ubuntuone.music.organizer.model.PlaylistBucket;
 import org.ubuntuone.music.organizer.model.PlaylistWrapper;
@@ -40,6 +41,8 @@ public class UbuntuOneMusicController {
 	private SongAdapterService songAdapterService;
 	@Autowired
 	private GenreService genreService;
+	@Autowired
+	private ReaderCollaborator readerCollaborator;
 	
 	@Autowired
 	private RestTemplate restTemplate;
@@ -92,10 +95,8 @@ public class UbuntuOneMusicController {
 	@RequestMethod(Actions.MOVE_SONGS_TO_PLAYLIST)
 	public ActionResult moveSongsToPlaylist(PlaylistBucket playlistBucket) {
 		log.info("MOVING songs to the playlists");
-		SongList songList = new SongList();
-		for (String string : playlistBucket.getSong_id_list()) {
-			songList.getSong_id_list().add(string);
-		}
+		
+		SongList songList = readerCollaborator.getSongList(playlistBucket.getSong_id_list());
 		String json = new Gson().toJson(songList);
 		log.info("json:" + json);
 		
